@@ -19,6 +19,15 @@ exports.parseUlidImpl = function (input) {
   }
 };
 
+exports.parseTimeImpl = function (input) {
+  try {
+    const time = ulid.decodeTime(input);
+    return time;
+  } catch (err) {
+    return null;
+  }
+}
+
 exports.monotonicFactoryImpl = function () {
   const factory = ulid.monotonicFactory();
 

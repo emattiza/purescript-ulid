@@ -1,6 +1,7 @@
 module Test.Main where
 
 import Prelude
+
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
@@ -10,7 +11,7 @@ import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter (consoleReporter)
 import Test.Spec.Runner (runSpec)
-import Ulid (monotonicFactory, parseUlid, toString, seededUlid, ulid)
+import Ulid (monotonicFactory, parseTime, parseUlid, seededUlid, toString, ulid)
 
 main :: Effect Unit
 main = do
@@ -58,3 +59,11 @@ main = do
               logShow ulid4
               ulid5 <- liftEffect $ factory timestamp
               logShow ulid5
+          describe "parseTime" do
+            it "parses a time from a ULID" do
+               let
+                 timestamp :: Number
+                 timestamp = 1607204546375.0
+               actual <- liftEffect $ seededUlid timestamp
+               let time1 = parseTime actual
+               time1 `shouldEqual` (Just timestamp)

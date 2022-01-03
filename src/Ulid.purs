@@ -5,6 +5,7 @@ module Ulid
   , parseUlid
   , toString
   , monotonicFactory
+  , parseTime
   ) where
 
 import Prelude
@@ -62,3 +63,8 @@ monotonicFactory :: Effect (Timestamp -> Effect Ulid)
 monotonicFactory = do
   factory <- monotonicFactoryImpl
   pure $ map Ulid <<< factory
+
+foreign import parseTimeImpl :: Fn1 String (Nullable Number)
+parseTime :: Ulid -> Maybe Timestamp
+parseTime (Ulid input) =
+  toMaybe <<< runFn1 parseTimeImpl $ input
